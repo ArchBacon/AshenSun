@@ -29,12 +29,15 @@ class ASHENSUN_API AAshenSunCharacter : public ACharacter, public IAbilitySystem
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta=(AllowPrivateAccess="true"))
 	USpringArmComponent* SpringArm;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Camera, meta=(AllowPrivateAccess="true"))
+	float MaxCameraMoveOffset;
+
 	/** Abilities */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Ability, meta=(AllowPrivateAccess="true"))
 	UAbilitySystemComponent* AbilitySystem = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Ability, meta=(AllowPrivateAccess="true"))
-	TSubclassOf<UGameplayEffect> DefaultAttributesEffect;
+	TSubclassOf<UGameplayEffect> DefaultAttributesEffect; 
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Ability, meta=(AllowPrivateAccess="true"))
 	UCharacterAttributeSet* CharacterAttributes;
@@ -61,6 +64,7 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void BeginPlay() override;
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 protected:
 	/** Event responses */
@@ -76,4 +80,9 @@ public:
 	FORCEINLINE virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystem; }
 	FORCEINLINE UCameraComponent* GetCameraComponent() const { return Camera; }
 	FORCEINLINE USpringArmComponent* GetSpringArmComponent() const { return SpringArm; }
+	FORCEINLINE float GetMaxCameraMoveOffset() const { return MaxCameraMoveOffset; }
+
+protected:
+	/**  */
+	void UpdateCameraMoveOffset() const;
 };

@@ -51,6 +51,9 @@ AAshenSunCharacter::AAshenSunCharacter()
 	Camera->SetProjectionMode(ECameraProjectionMode::Orthographic);
 	Camera->OrthoWidth = 768.f;
 
+	// Maximum offset when camera is moved by mouse input
+	MaxCameraMoveOffset = 20.f;
+
 	// Create attribute sets
 	CharacterAttributes = CreateDefaultSubobject<UCharacterAttributeSet>(TEXT("CharacterAttributeSet"));
 	ResourcesAttributes = CreateDefaultSubobject<UResourcesAttributeSet>(TEXT("ResourcesAttributeSet"));
@@ -107,6 +110,13 @@ void AAshenSunCharacter::PossessedBy(AController* NewController)
 	AbilitySystem->InitAbilityActorInfo(this, this);
 }
 
+void AAshenSunCharacter::Tick(const float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	UpdateCameraMoveOffset();
+}
+
 void AAshenSunCharacter::OnMovementSpeedChanged(const FOnAttributeChangeData& Data) const
 {
 	GetCharacterMovement()->MaxWalkSpeed = Data.NewValue;
@@ -135,5 +145,26 @@ void AAshenSunCharacter::Move(const FInputActionValue& Value)
 
 void AAshenSunCharacter::Look(const FInputActionValue& Value)
 {
-	// TODO
+	// Camera is updated in tick since te Enhanced input system does not support a visible cursor that triggers without having a mouse button down.
+}
+
+void AAshenSunCharacter::UpdateCameraMoveOffset() const
+{
+	FVector2D ViewportCenter;
+	FVector2D MousePosition;
+
+	if (GEngine && GEngine->GameViewport)
+	{
+		FVector2D ViewportSize;
+		GEngine->GameViewport->GetViewportSize(ViewportSize);
+		ViewportCenter = ViewportSize / 2.f;
+	}
+
+	if (const auto PlayerController = Cast<APlayerController>(GetController()))
+	{
+		PlayerController->GetMousePosition(MousePosition.X, MousePosition.Y);
+	}
+
+	const FVector2D CameraMoveOffset = ((ViewportCenter - MousePosition) / ViewportCenter) * MaxCameraMoveOffset;
+	SpringArm->SocketOffset = FVector(0.0f, -CameraMoveOffset.X, CameraMoveOffset.Y);
 }
