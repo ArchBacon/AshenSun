@@ -40,7 +40,7 @@ AAshenSunCharacter::AAshenSunCharacter()
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when character does
-	SpringArm->TargetArmLength = 300.f;
+	SpringArm->TargetArmLength = 1000.f;
 	SpringArm->SetRelativeRotation(FRotator(-45.f, -135.f, 0.f));
 	SpringArm->bDoCollisionTest = false;
 	
