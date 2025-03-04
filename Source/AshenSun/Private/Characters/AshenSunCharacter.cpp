@@ -41,13 +41,15 @@ AAshenSunCharacter::AAshenSunCharacter()
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when character does
 	SpringArm->TargetArmLength = 300.f;
-	SpringArm->SetRelativeRotation(FRotator(-49.f, -135.f, 0.f));
+	SpringArm->SetRelativeRotation(FRotator(-45.f, -135.f, 0.f));
 	SpringArm->bDoCollisionTest = false;
 	
 	// Create a camera
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
+	Camera->SetProjectionMode(ECameraProjectionMode::Orthographic);
+	Camera->OrthoWidth = 768.f;
 
 	// Create attribute sets
 	CharacterAttributes = CreateDefaultSubobject<UCharacterAttributeSet>(TEXT("CharacterAttributeSet"));
