@@ -148,7 +148,7 @@ void AAshenSunCharacter::Look(const FInputActionValue& Value)
 	// Camera is updated in tick since te Enhanced input system does not support a visible cursor that triggers without having a mouse button down.
 }
 
-void AAshenSunCharacter::UpdateCameraMoveOffset() const
+FVector2D AAshenSunCharacter::GetMouseDirection() const
 {
 	FVector2D ViewportCenter;
 	FVector2D MousePosition;
@@ -165,6 +165,11 @@ void AAshenSunCharacter::UpdateCameraMoveOffset() const
 		PlayerController->GetMousePosition(MousePosition.X, MousePosition.Y);
 	}
 
-	const FVector2D CameraMoveOffset = ((ViewportCenter - MousePosition) / ViewportCenter) * MaxCameraMoveOffset;
+	return (ViewportCenter - MousePosition) / ViewportCenter;
+}
+
+void AAshenSunCharacter::UpdateCameraMoveOffset() const
+{
+	const FVector2D CameraMoveOffset = GetMouseDirection() * MaxCameraMoveOffset;
 	SpringArm->SocketOffset = FVector(0.0f, -CameraMoveOffset.X, CameraMoveOffset.Y);
 }

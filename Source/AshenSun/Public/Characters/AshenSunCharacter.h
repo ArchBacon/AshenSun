@@ -83,6 +83,8 @@ public:
 	FORCEINLINE float GetMaxCameraMoveOffset() const { return MaxCameraMoveOffset; }
 
 protected:
-	/**  */
+	/** Other */
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FVector2D GetMouseDirection() const;
 	void UpdateCameraMoveOffset() const;
 };
