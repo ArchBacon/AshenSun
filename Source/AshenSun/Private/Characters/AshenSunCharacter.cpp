@@ -52,7 +52,7 @@ AAshenSunCharacter::AAshenSunCharacter()
 	Camera->OrthoWidth = 768.f;
 
 	// Maximum offset when camera is moved by mouse input
-	MaxCameraMoveOffset = 20.f;
+	MaxCameraMoveOffset = 35.f;
 
 	// Create attribute sets
 	CharacterAttributes = CreateDefaultSubobject<UCharacterAttributeSet>(TEXT("CharacterAttributeSet"));
