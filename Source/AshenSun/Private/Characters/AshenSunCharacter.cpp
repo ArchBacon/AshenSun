@@ -60,6 +60,8 @@ AAshenSunCharacter::AAshenSunCharacter()
 
 	// Create ability system and listen for attribute changes
 	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystem->AddAttributeSetSubobject(CharacterAttributes);
+	AbilitySystem->AddAttributeSetSubobject(ResourcesAttributes);
 	AbilitySystem->GetGameplayAttributeValueChangeDelegate(UCharacterAttributeSet::GetMovementSpeedAttribute()).AddUObject(this, &AAshenSunCharacter::OnMovementSpeedChanged);
 }
 
